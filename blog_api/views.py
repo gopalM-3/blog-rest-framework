@@ -56,7 +56,7 @@ class BlogSearch(generics.ListAPIView):
 
 
 class CreateBlog(generics.CreateAPIView):
-    permission_classes = [BlogUserWritePermission]
+    # permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     serializer_class = BlogSerializer
     queryset = Blog.objects.all()
@@ -73,7 +73,7 @@ class UpdateBlog(generics.UpdateAPIView):
 
 
 class DeleteBlog(generics.DestroyAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [BlogUserWritePermission]
     authentication_classes = [JWTAuthentication]
     serializer_class = BlogSerializer
     queryset = Blog.objects.all()
