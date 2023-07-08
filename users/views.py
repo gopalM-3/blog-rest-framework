@@ -7,7 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class BlogUserRegister(APIView):
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
 
     def post(self, request):
         reg_serializer = BlogUserRegisterSerializer(data=request.data)
@@ -19,7 +19,7 @@ class BlogUserRegister(APIView):
 
 
 class BlogUserLogout(APIView):
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
 
     def post(self, request):
         try:

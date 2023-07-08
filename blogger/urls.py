@@ -30,7 +30,8 @@ urlpatterns = [
     path('api/', include('blog_api.urls')),
     path('api/user/', include('users.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/user/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/user/login/', TokenObtainPairView.as_view(),
+         name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('schemas/', get_schema_view(

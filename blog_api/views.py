@@ -4,6 +4,7 @@ from rest_framework import status, generics
 from blog.models import Blog
 from .serializers import BlogSerializer
 from rest_framework.permissions import BasePermission, SAFE_METHODS, IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import viewsets, filters
 
 
@@ -13,7 +14,8 @@ class BlogHome(generics.ListAPIView):
 
 
 class BlogList(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     serializer_class = BlogSerializer
 
     def get_queryset(self):
@@ -45,18 +47,24 @@ class BlogSearch(generics.ListAPIView):
 
 
 class CreateBlog(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     serializer_class = BlogSerializer
     queryset = Blog.objects.all()
 
 
 class UpdateBlog(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     serializer_class = BlogSerializer
-    queryset = Blog.objects.all()
+
+    def get_queryset(self):
+        param = self.kwargs.get('pk')
+        return Blog.objects.filter(id=param)
 
 
 class DeleteBlog(generics.RetrieveDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     serializer_class = BlogSerializer
     queryset = Blog.objects.all()
