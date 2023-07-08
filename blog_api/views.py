@@ -8,6 +8,15 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import viewsets, filters
 
 
+class BlogUserWritePermission(BasePermission):
+    message = 'Only author can edit/delete their blogs.'
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in SAFE_METHODS:
+            return True
+        return obj.author == request.user
+
+
 class BlogHome(generics.ListAPIView):
     serializer_class = BlogSerializer
     queryset = Blog.blogobjects.all()
@@ -47,14 +56,14 @@ class BlogSearch(generics.ListAPIView):
 
 
 class CreateBlog(generics.CreateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [BlogUserWritePermission]
     authentication_classes = [JWTAuthentication]
     serializer_class = BlogSerializer
     queryset = Blog.objects.all()
 
 
 class UpdateBlog(generics.UpdateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [BlogUserWritePermission]
     authentication_classes = [JWTAuthentication]
     serializer_class = BlogSerializer
 
@@ -63,7 +72,7 @@ class UpdateBlog(generics.UpdateAPIView):
         return Blog.objects.filter(id=param)
 
 
-class DeleteBlog(generics.RetrieveDestroyAPIView):
+class DeleteBlog(generics.DestroyAPIView):
     # permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     serializer_class = BlogSerializer
